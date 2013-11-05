@@ -1,0 +1,14 @@
+﻿
+	            // Gain access so I can change the TextViews
+	            TextView line1 = (TextView)findViewById(R.id.line1);
+	            TextView line2 = (TextView)findViewById(R.id.line2);
+	            TextView line3 = (TextView)findViewById(R.id.line3);
+	 
+	            // Change the values for all the TextViews
+	            line1.setText("Stock: " + stockSymbol + " : " + stockChange);
+	 
+	            line2.setText("Days Low: " + stockDaysLow);
+	 
+	            line3.setText("Days High: " + stockDaysHigh);
+	 
+	        }
