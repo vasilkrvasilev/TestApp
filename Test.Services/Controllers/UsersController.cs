@@ -19,12 +19,12 @@ namespace Test.Services.Controllers
         private const int MaxUsernameLength = 50;
         private const string ValidUsernameCharacters =
             "qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM1234567890_.";
-        private const string ValidNicknameCharacters =
-            "qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM1234567890_. -";
+        private const string ValidNameCharacters =
+            "qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM";
 
         //private const string SessionKeyChars =
         //    "qwertyuioplkjhgfdsazxcvbnmQWERTYUIOPLKJHGFDSAZXCVBNM";
-        private static readonly Random rand = new Random();
+        //private static readonly Random rand = new Random();
 
         //private const int SessionKeyLength = 50;
 
@@ -52,27 +52,27 @@ namespace Test.Services.Controllers
             var responseMsg = this.PerformOperationAndHandleExceptions(
                 () =>
                 {
-                    var context = new TestDbEntities();
+                    var context = new dbf609f467420e40209014a26e008b568aEntities();
                     using (context)
                     {
                         this.ValidateUsername(model.Username);
-                        this.ValidateNickname(model.Name);
+                        this.ValidateName(model.Name);
                         this.ValidatePassword(model.Password);
                         var usernameToLower = model.Username.ToLower();
-                        var nicknameToLower = model.Name.ToLower();
+                        var nameToLower = model.Name.ToLower();
                         var user = context.Users.FirstOrDefault(
                             usr => usr.Username == usernameToLower
-                            || usr.Nickname.ToLower() == nicknameToLower);
+                            || usr.Name.ToLower() == nameToLower);
 
                         if (user != null)
                         {
-                            throw new InvalidOperationException("Users already exists");
+                            throw new InvalidOperationException("User already exists");
                         }
 
                         user = new User()
                         {
                             Username = usernameToLower,
-                            Nickname = model.Name,
+                            Name = model.Name,
                             Password = model.Password
                         };
 
@@ -84,7 +84,7 @@ namespace Test.Services.Controllers
 
                         var loggedModel = new UserLoggedModel()
                         {
-                            Name = user.Nickname,
+                            Name = user.Name,
                             SessionKey = user.SessionKey
                         };
 
@@ -104,7 +104,7 @@ namespace Test.Services.Controllers
             var responseMsg = this.PerformOperationAndHandleExceptions(
               () =>
               {
-                  var context = new TestDbEntities();
+                  var context = new dbf609f467420e40209014a26e008b568aEntities();
                   using (context)
                   {
                       this.ValidateUsername(model.Username);
@@ -127,7 +127,7 @@ namespace Test.Services.Controllers
 
                       var loggedModel = new UserLoggedModel()
                       {
-                          Name = user.Nickname,
+                          Name = user.Name,
                           SessionKey = user.SessionKey
                       };
 
@@ -148,7 +148,7 @@ namespace Test.Services.Controllers
             var responseMsg = this.PerformOperationAndHandleExceptions(
               () =>
               {
-                  var context = new TestDbEntities();
+                  var context = new dbf609f467420e40209014a26e008b568aEntities();
                   using (context)
                   {
                       var user = context.Users.FirstOrDefault(
@@ -177,7 +177,7 @@ namespace Test.Services.Controllers
         {
             var responseMsg = this.PerformOperationAndHandleExceptions(() =>
             {
-                var context = new TestDbEntities();
+                var context = new dbf609f467420e40209014a26e008b568aEntities();
 
                 var user = context.Users.FirstOrDefault(
                     usr => usr.SessionKey == sessionKey);
@@ -188,7 +188,7 @@ namespace Test.Services.Controllers
 
                 var model = new UserModel()
                 {
-                    Name = user.Nickname,
+                    Name = user.Name,
                     Username = user.Username,
                     Password = user.Password
                 };
@@ -219,28 +219,28 @@ namespace Test.Services.Controllers
             }
         }
 
-        private void ValidateNickname(string nickname)
+        private void ValidateName(string name)
         {
-            if (nickname == null)
+            if (name == null)
             {
                 throw new ArgumentNullException("Nickname cannot be null");
             }
-            else if (nickname.Length < MinLength)
+            else if (name.Length < MinLength)
             {
                 throw new ArgumentOutOfRangeException(
-                    string.Format("Nickname must be at least {0} characters long",
+                    string.Format("Name must be at least {0} characters long",
                     MinLength));
             }
-            else if (nickname.Length > MaxUsernameLength)
+            else if (name.Length > MaxUsernameLength)
             {
                 throw new ArgumentOutOfRangeException(
-                    string.Format("Nickname must be less than {0} characters long",
+                    string.Format("Name must be less than {0} characters long",
                     MaxUsernameLength));
             }
-            else if (nickname.Any(ch => !ValidNicknameCharacters.Contains(ch)))
+            else if (name.Any(ch => !ValidNameCharacters.Contains(ch)))
             {
                 throw new ArgumentOutOfRangeException(
-                    "Nickname must contain only Latin letters, digits .,_, ,-");
+                    "Name must contain only Latin letters");
             }
         }
 

@@ -200,7 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Test.Data\Test.Data.csproj">
-      <Project>{b2f9ac71-7eff-42b3-a4ac-d03ba01dd276}</Project>
+      <Project>{b1a0c10d-839d-4733-b6ef-77ca770d77ab}</Project>
       <Name>Test.Data</Name>
     </ProjectReference>
   </ItemGroup>
